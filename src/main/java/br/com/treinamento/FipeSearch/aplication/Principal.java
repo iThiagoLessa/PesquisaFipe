@@ -11,6 +11,7 @@ import java.util.*;
 public class Principal {
     private final GetService getData = new GetService();
     Scanner read = new Scanner(System.in);
+    private final String baseURL = "https://parallelum.com.br/fipe/api/v1/";
 
     private final ArrayList<String> typesOfVehicle = new ArrayList<>(Arrays.asList("Carros", "Motos", "Caminhões"));
     private final List<VehicleDetails> detailsList = new ArrayList<>();
@@ -32,7 +33,7 @@ public class Principal {
         boolean isValidVehicle = typesOfVehicle.stream().anyMatch(item -> item.equalsIgnoreCase(vehicle));
 
         if (isValidVehicle) {
-            String responseBrandOfVehicles = getData.getApi("https://parallelum.com.br/fipe/api/v1/" + vehicle + "/marcas");
+            String responseBrandOfVehicles = getData.getApi(baseURL + vehicle + "/marcas");
             List<BrandOfVehicle> listOfBrandVehicle = convertData.getData(responseBrandOfVehicles, new TypeReference<>() {
             });
 
@@ -44,7 +45,7 @@ public class Principal {
 
             System.out.println("Código da marca selecionado: " + code);
 
-            String responseOfModelCar = getData.getApi("https://parallelum.com.br/fipe/api/v1/" + vehicle + "/marcas/" + code + "/modelos");
+            String responseOfModelCar = getData.getApi(baseURL + vehicle + "/marcas/" + code + "/modelos");
 
 
             CarModelResponse carModelResponse = convertData.getData(responseOfModelCar, CarModelResponse.class);
@@ -63,7 +64,7 @@ public class Principal {
 
                 switch (confirm.toLowerCase()) {
                     case "sim":
-                        String responseOfCarYear = getData.getApi("https://parallelum.com.br/fipe/api/v1/" + vehicle + "/marcas/" + code + "/modelos/" + searched.get().code() + "/anos");
+                        String responseOfCarYear = getData.getApi(baseURL + vehicle + "/marcas/" + code + "/modelos/" + searched.get().code() + "/anos");
 
 
                         System.out.println("response of car ai: " + responseOfCarYear);
@@ -74,7 +75,7 @@ public class Principal {
 
 
                         listCarYers.forEach(item -> {
-                            String responseOfCarDetails = getData.getApi("https://parallelum.com.br/fipe/api/v1/" + vehicle + "/marcas/" + code + "/modelos/" + searched.get().code() + "/anos/" + item.code());
+                            String responseOfCarDetails = getData.getApi(baseURL + vehicle + "/marcas/" + code + "/modelos/" + searched.get().code() + "/anos/" + item.code());
 
                             System.out.println("reponse responseOfCarDetails" + responseOfCarDetails);
                             VehicleDetails vehicleDetails = convertData.getData(responseOfCarDetails, VehicleDetails.class);
